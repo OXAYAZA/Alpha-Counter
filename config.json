@@ -1,0 +1,103 @@
+{
+	"mask": [],
+	"livedemo": {
+		"server":        "dev/",
+		"port":          8000,
+		"open":          false,
+		"notify":        true,
+		"reloadDelay":   0,
+		"ghostMode": {
+			"clicks":      false,
+			"forms":       false,
+			"scroll":      false
+		}
+	},
+	"sass": {
+		"enable":        true,
+		"watch":         "dev/sass/**/*.scss",
+		"source":        "dev/sass/!(_)style.scss",
+		"dest":          "dev/css/",
+		"options": {
+			"outputStyle": "expanded",
+			"indentType":  "tab",
+			"indentWidth": "1",
+			"linefeed":    "cr"
+		}
+	},
+	"less": {
+		"enable":        false,
+		"watch":         "dev/less/**/*.less",
+		"source":        "dev/less/style.less",
+		"dest":          "dev/css/"
+	},
+	"pug": {
+		"enable":        true,
+		"watch":         "dev/pug/**/*.pug",
+		"source":        "dev/pug/!(_)index.pug",
+		"dest":          "dev/",
+		"options": {
+			"pretty":      true,
+			"verbose":     true,
+			"locals": {
+				"dbgImg":    false,
+				"dbgBread":  true
+			}
+		}
+	},
+	"jade": {
+		"enable":        false,
+		"watch":         "dev/jade/**/*.jade",
+		"source":        "dev/jade/!(_)index.jade",
+		"dest":          "dev/",
+		"options": {
+			"pretty":      true
+		}
+	},
+	"autoprefixer": {
+		"enable":        false,
+		"options": {
+			"cascade":     true,
+			"browsers":    [ "last 3 versions", "> 1%", "not ie < 10" ]
+		}
+	},
+	"js": {
+		"enable":        true,
+		"watch":         "dev/js/**/*.js"
+	},
+	"html": {
+		"enable":        false,
+		"watch":         "dev/**/*.html",
+		"validate":      "dev/*.html",
+		"report":        "dev/"
+	},
+	"css": {
+		"enable":        false,
+		"watch":         "dev/css/**/*.css"
+	},
+	"buildPreset":     "distribution",
+	"buildRules": {
+		"distribution": [
+			{ "enable":true, "action":"clean",     "type":"serial",   "src":"dist/!(.)*" },
+			{ "enable":true, "action":"copy",      "type":"parallel", "src":"dev/images/*",           "dest":"dist/demo/images/" },
+			{ "enable":true, "action":"copy",      "type":"parallel", "src":"dev/css/*.css",          "dest":"dist/demo/css/" },
+			{ "enable":true, "action":"copy",      "type":"parallel", "src":"dev/js/*.js",            "dest":"dist/demo/js/" },
+			{ "enable":true, "action":"copy",      "type":"parallel", "src":"dev/*.html",             "dest":"dist/demo/" },
+
+			{ "enable":true, "action":"copy",      "type":"parallel", "src":"dev/pug/*.pug",          "dest":"dist/sources/pug/" },
+			{ "enable":true, "action":"copy",      "type":"parallel", "src":"dev/sass/*.scss",        "dest":"dist/sources/sass/" },
+
+			{ "enable":true, "action":"copy",      "type":"parallel", "src":"dev/js/core.js",         "dest":"dist/dist/" },
+			{ "enable":true, "action":"copy", "type":"parallel", "src":["readme.md", "package.json", "gulpfile.js", "config.json"], "dest":"dist/" }
+		],
+		"clean": [
+			{ "enable":true, "action":"clean", "type":"serial", "src":"dist/!(.)*" }
+		],
+		"backup": [
+			{ "enable":true, "action":"pack", "type":"serial", "src":["dev/**/*", "config.json", "gulpfile.js", "info.txt", "package.json"], "dest":"versions/" }
+		],
+		"portJadePug": [
+			{ "enable":true, "action":"portJadePug", "type":"serial", "src":"dev/jade/**/*.jade", "dest":"dev/pug/" },
+			{ "enable":true, "action":"clean",       "type":"serial", "src":"dev/jade/" }
+		]
+	}
+}
