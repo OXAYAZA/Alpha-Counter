@@ -44,14 +44,14 @@ Standard HTML markup for countdown:
 Add styles:
 
 ```html
-<link rel="stylesheet" href="path/to/css/rd-parallax.css">
+<link rel="stylesheet" href="path/to/css/style.css">
 ```
 
 Initialization:
 
 ```js
 document.addEventListener( 'DOMContentLoaded', function () {
-	svgCountDown();
+  svgCountDown();
 });
 ```
 
