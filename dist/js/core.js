@@ -1,6 +1,6 @@
 /**
  * @module       SVG Progress Circle
- * @author       ATOM
+ * @author       Bazaev Yuri (ATOM)
  * @license      CC BY-SA 4.0 (https://creativecommons.org/licenses/by-sa/4.0/)
  * @see          https://codepen.io/OXAYAZA/pen/JJryqW
  * @version      v2.0.1
