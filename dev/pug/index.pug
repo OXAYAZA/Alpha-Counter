@@ -1,0 +1,27 @@
+extends _skeleton
+
+block page
+	.page
+
+		section.section: .container
+			.block
+				+countdown({
+					from:  '2017-08-19',
+					to:    '2019-09-20',
+					count: 'until',
+					color: randHEX()
+				})
+				+countdown-compact({
+					from:  '2018-12-10',
+					to:    '2018-12-30T15:30:30',
+					count: 'until'
+				})
+
+		section.section: .container
+			- for( var i = 0; i < 100; i++ )
+				- cfg.color = randHEX();
+				- cfg.number = rand( 100 );
+				.block
+					+counter( cfg.number, cfg.color )
+					+progress-linear( cfg.placeholders[ rand( cfg.placeholders.length ) ], cfg.number, cfg.color )
+					+progress-circle( cfg.number, cfg.color )

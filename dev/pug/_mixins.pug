@@ -1,0 +1,48 @@
+//- Counter
+mixin counter( value, color )
+	- if ( color ) attributes.style = `border-color: ${color}`;
+	.counter( contenteditable='true' )&attributes( attributes )= value
+
+//- Linear Progress bar
+mixin progress-linear( title, value, color )
+	- if ( color ) var barAttributes = { style: `background-color: ${color}` };
+	.progress-linear&attributes( attributes )
+		.progress-linear-header
+			h4.progress-linear-title= title
+			h2.progress-linear-counter( contenteditable='true' )= value
+		.progress-linear-body
+			.progress-linear-bar&attributes( barAttributes )
+
+//- Circle Progress
+mixin progress-circle( value, color )
+	.progress-circle&attributes( attributes )
+		svg.progress-circle-bar( x='0px', y='0px', width='100px', height='100px', viewbox='0 0 100 100' )
+			circle.clipped( cx=50, cy=50, r=50, fill=color )
+		.progress-circle-decor
+		h2.progress-circle-counter( contenteditable='true' )= value
+
+//- Countdown
+mixin countdown( data )
+	.countdown( data-countdown data-from= data.from, data-to= data.to, data-counting= data.count )
+		each value in [ 'days', 'hours', 'minutes', 'seconds' ]
+			- var counterAttr = {}; counterAttr[ 'data-counter-'+ value ] = '';
+			- var circleAttr = {}; circleAttr[ 'data-progress-'+ value ] = '';
+			.countdown-block
+				svg.countdown-circle( x='0px', y='0px', width='100px', height='100px', viewbox='0 0 100 100' )&attributes( circleAttr )
+					circle.clipped( cx=50, cy=50, r=50, fill= data.color )
+				.countdown-wrap
+					h1.countdown-counter&attributes( counterAttr ) 00
+					h6.countdown-title= value
+
+//- Countdown Compact
+mixin countdown-compact( data )
+	.countdown-compact( data-countdown data-from= data.from, data-to= data.to, data-counting= data.count )
+		.countdown-compact-circles
+			each value in [ 'days', 'hours', 'minutes', 'seconds' ]
+				- var attr = {}; attr[ 'data-progress-'+ value ] = ''; attr[ 'class' ] = 'countdown-compact-circle-'+ value;
+				svg.countdown-compact-circle( x='0px', y='0px', width='100px', height='100px', viewbox='0 0 100 100' )&attributes( attr )
+					circle.clipped( cx=50, cy=50, r=50, fill= randHEX() )
+		.countdown-compact-counters
+			each value in [ 'days', 'hours', 'minutes', 'seconds' ]
+				- var attr = {}; attr[ 'data-counter-'+ value ] = ''; attr[ 'class' ] = 'countdown-compact-counter-'+ value;
+				h1.countdown-compact-counter&attributes( attr ) 00

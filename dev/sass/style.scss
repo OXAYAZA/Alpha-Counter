@@ -1,0 +1,213 @@
+/** @section Base */
+* {
+	box-sizing: border-box;
+	padding: 0;
+	margin: 0;
+}
+
+body {
+	font-family: Arial;
+	background: #313233;
+	color: white;
+}
+
+.page {
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	min-height: 90vh;
+}
+
+.section {
+	padding: 10vh 0;
+}
+
+.container {
+	max-width: 900px;
+	margin: 0 auto;
+	padding: 0 15px;
+}
+
+.block {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+
+	> .progress-linear {
+		flex-grow: 1;
+	}
+
+	> * + * {
+		margin-left: 40px;
+	}
+}
+
+* + .block {
+	margin-top: 20px;
+}
+
+
+/** @section Counter */
+.counter {
+	min-width: 80px;
+	padding: 10px 15px;
+	border: 3px solid white;
+	border-radius: 10px;
+	text-align: center;
+}
+
+
+/** @section Progress linear */
+.progress-linear-header {
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+	letter-spacing: .1em;
+
+	> * + * {
+		margin-left: 20px;
+	}
+}
+
+.progress-linear-body {
+	height: 14px;
+	border-radius: 6px;
+	margin-top: 5px;
+	overflow: hidden;
+	background: rgba(black,.3);
+}
+
+.progress-linear-bar {
+	height: 100%;
+	width: 0;
+	max-width: 100%;
+	border-radius: 5px;
+	transition: 1s;
+	background: white;
+}
+
+
+/** @section Progress Circle */
+.progress-circle {
+	position: relative;
+}
+
+.progress-circle-bar {
+	display: block;
+	fill: white;
+	transform-origin: 50% 50%;
+	border-radius: 50%;
+	background: rgba(black,.3);
+}
+
+.progress-circle-counter {
+	position: absolute;
+	top: 0;
+	bottom: 0;
+	left: 0;
+	right: 0;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	text-shadow: 0 0 5px black;
+}
+
+
+/** @section Countdown */
+.countdown {
+	display: flex;
+	justify-content: center;
+	text-align: center;
+	margin: 0 -15px;
+	line-height: 1.2;
+}
+
+.countdown-block {
+	position: relative;
+	padding: 0 15px;
+}
+
+.countdown-wrap {
+	position: absolute;
+	top: 0;
+	bottom: 0;
+	left: 0;
+	right: 0;
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+}
+
+.countdown-circle {
+	border-radius: 50%;
+	background: rgba(black,.3);
+}
+
+.countdown-title {
+	text-transform: uppercase;
+}
+
+.countdown-counter,
+.countdown-title {
+	text-shadow: 0 0 5px black;
+}
+
+
+/** @section Countdown Compact */
+.countdown-compact {
+	position: relative;
+	display: flex;
+	justify-content: center;
+}
+
+.countdown-compact-circles {
+	position: relative;
+	background: rgba(black,.3);
+	border-radius: 50%;
+}
+
+.countdown-compact-circle {
+	display: block;
+}
+
+.countdown-compact-circle:not( .countdown-compact-circle-days ) {
+	position: absolute;
+	top: 50%;
+	left: 50%;
+	transform: translate( -50%, -50% );
+}
+
+.countdown-compact-circle-days {
+	width: 200px;
+	height: 200px;
+}
+
+.countdown-compact-circle-hours {
+	width: 180px;
+	height: 180px;
+}
+
+.countdown-compact-circle-minutes {
+	width: 160px;
+	height: 160px;
+}
+
+.countdown-compact-circle-seconds {
+	width: 140px;
+	height: 140px;
+}
+
+.countdown-compact-counters {
+	position: absolute;
+	top: 50%;
+	left: 50%;
+	transform: translate( -50%, -50% );
+	display: flex;
+	text-shadow: 0 0 5px black;
+}
+
+.countdown-compact-counter {
+	&:not(:last-child)::after {
+		content: ':';
+	}
+}

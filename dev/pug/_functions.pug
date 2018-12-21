@@ -1,0 +1,10 @@
+-
+	function rand( number ) {
+		return ~~(Math.random() * number);
+	}
+
+	function randHEX() {
+		var set = '0123456789abcdef', hex = '#';
+		for( var i = 0; i < 6; i++ ) hex += set[ rand( 16 ) ];
+		return hex;
+	}
