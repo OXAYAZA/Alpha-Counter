@@ -1,106 +1,87 @@
-# Countdown
+# αCounters
 
-Customizable countdown svg circles.
-Check out this [Demo](https://codepen.io/OXAYAZA/pen/JJryqW) to see it in action!
+Customizable counters, progress circles and countdown.
+Check out this [Demo](https://codepen.io/OXAYAZA/pen/JJryqW) to see they in action!
 
 
-## Usage
+## αCounter Usage
 
-Standard HTML markup for countdown:
-
+Simple HTML markup for counter:
 ```html
-<div class="wrap" data-countdown data-from="2017-08-19T20:00:00" data-to="2017-09-20T20:30:00">
-  <div class="progress-circle" data-circle-countdown="data-circle-countdown" data-units="Days">
-    <svg x="0px" y="0px" width="200px" height="200px" viewbox="0 0 100 100">
-      <clipPath class="progress-clip"><path d=""></path></clipPath>
-      <circle class="clipped" cx="50" cy="50" r="50"></circle>
-    </svg>
-    <div class="counter"></div>
-  </div>
-  <div class="progress-circle" data-circle-countdown="data-circle-countdown" data-units="Hours">
-    <svg x="0px" y="0px" width="200px" height="200px" viewbox="0 0 100 100">
-      <clipPath class="progress-clip"><path d=""></path></clipPath>
-      <circle class="clipped" cx="50" cy="50" r="50"></circle>
-    </svg>
-    <div class="counter"></div>
-  </div>
-  <div class="progress-circle" data-circle-countdown="data-circle-countdown" data-units="Minutes">
-    <svg x="0px" y="0px" width="200px" height="200px" viewbox="0 0 100 100">
-      <clipPath class="progress-clip"><path d=""></path></clipPath>
-      <circle class="clipped" cx="50" cy="50" r="50"></circle>
-    </svg>
-    <div class="counter"></div>
-  </div>
-  <div class="progress-circle" data-circle-countdown="data-circle-countdown" data-units="Seconds">
-    <svg x="0px" y="0px" width="200px" height="200px" viewbox="0 0 100 100">
-      <clipPath class="progress-clip"><path d=""></path></clipPath>
-      <circle class="clipped" cx="50" cy="50" r="50"></circle>
-    </svg>
-    <div class="counter"></div>
-  </div>
-</div>
-```
-
-Add styles:
-
-```html
-<link rel="stylesheet" href="path/to/css/style.css">
+<span class="counter">99</span>
 ```
 
 Initialization:
-
 ```js
-document.addEventListener( 'DOMContentLoaded', function () {
-  svgCountDown();
+var counter = aCounter({ node: document.querySelector( '.counter' ) });
+```
+
+or with all options:
+```js
+var counter = aCounter({
+    node:       document.querySelector( '.counter' ),
+    from:       10,
+    to:         50,
+    duration:   1000,
+    refresh:    30,
+    formatter:  function ( value ) { return value + '%'; },
+    onStart:    function ( value ) { console.log( value ); },
+    onUpdate:   function ( value ) { console.log( value ); },
+    onComplete: function ( value ) { console.log( value ); }
 });
 ```
 
+### αCounter API
 
-#### Basic Elements:
+#### aCounter( options )
+Returns a counter instance.
 
-`<div class="wrap" data-countdown data-from="2017-08-19T20:00:00" data-to="2017-09-20T20:30:00">...</div>` - main wrapper, contains 4 circles for countdown.
+#### options
+_Type: [Object](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object)_
+_Required_
 
-`<div class="progress-circle" data-circle-countdown="data-circle-countdown" data-units="Days">...</div>` - block of the countdown circle, contains an svg image and counter.
+##### node
+_Type: [Element object](https://developer.mozilla.org/en-US/docs/Web/API/Element)_
+_Required_
+The element that is changed by the counter.
 
-`<clipPath class="progress-clip"><path d=""></path></clipPath>` - element for clipping the main figure.
+##### from
+_Type: [Number](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Number)_
+_Default: 0_
+The number from which the count begins.
 
-`<circle class="clipped" cx="50" cy="50" r="50"></circle>` - cropped figure.
+##### to
+_Type: [Number](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Number)_
+The number to which the count ends. If the parameter is not specified, the counter will try to get it from the element. Otherwise, an error is thrown.
 
-`<div class="counter"></div>` - counter.
+##### duration
+_Type: [Number](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Number)_
+_Default: 3000_
+Сounting duration in milliseconds.
 
-#### Basic Attributes:
+##### refresh
+_Type: [Number](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Number)_
+_Default: 30_
+Counter element refresh rate in milliseconds.
 
-`data-countdown` - script initialization attribute, can be changed to id or class, does not have values.
+##### formatter( value )
+_Type: [Function](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Function)_
+A callback function that serving as a counter value formatter. Must return a modified counter value (for example, added prefix). The counter instance serves as the context.
 
-`data-from` - starting time in the format `YYYY-MM-DDTHH:mm:ss`, where `T`- date and time separator.
+##### onStart( value )
+_Type: [Function](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Function)_
+Callback function that execute before count starting. The counter instance serves as the context. The counter value serves as a parameter.
 
-`data-to` - end time in the format `YYYY-MM-DDTHH:mm:ss`, where `T`- date and time separator.
+##### onUpdate( value )
+_Type: [Function](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Function)_
+Callback function that execute on each counter refresh. The counter instance serves as the context. The counter value serves as a parameter.
 
-`data-circle-countdown` - attribute for initialization of the countdown circle, can be changed to an id or a class, has no values.
-
-`data-units` - units of time displayed in the circle: `Days, Hours, Minutes, Seconds`.
-
-
-## API
-
-##### svgCountDown([ options ])
-
-* optins (Object): object for storing options;
-* optins.clipPathSelector (String): clipPath selector;
-* optins.clippedSelector (String): clipped element selector;
-* optins.counterSelector (String): counter selector;
-* optins.clipPathId (String): added clipPath id (it is necessary because svg attribute clip-path can refer only to id);
-* optins.unitsAttr (String): attribute name for setting time units;
-* optins.fromAttr (String): attribute name for the countdown start;
-* optins.toAttr (String): attribute name for the countdown end;
-* optins.increase (Boolean): true - filling in the circle clockwise, false - cleaning the circle clockwise.
-* optins.tickInterval (Number): interval for recalculation and drawing a circle;
-* optins.oninit (Function): function performed when the script is initialized;
-* optins.ontick (Function): function performed at each recalculation;
+##### onComplete( value )
+_Type: [Function](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Function)_
+Callback function that execute when counting complete. The counter instance serves as the context. The counter value serves as a parameter.
 
 
 ## License
 
 Licensed under [CC BY-SA 4.0](https://creativecommons.org/licenses/by-sa/4.0/)
-
 [![Creative Commons License](https://i.creativecommons.org/l/by-sa/4.0/80x15.png)](https://creativecommons.org/licenses/by-sa/4.0/)

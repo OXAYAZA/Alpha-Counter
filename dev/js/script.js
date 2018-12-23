@@ -15,7 +15,8 @@ document.addEventListener( 'DOMContentLoaded', function () {
 				node = plugins.counters[i],
 				counter = aCounter({
 					node: node,
-					duration: 1000
+					duration: 1000,
+					formatter: function ( value ) { return value + '%'; }
 				}),
 				scrollHandler = (function() {
 					if ( Util.inViewport( this ) && !this.classList.contains( 'animated' ) ) {
