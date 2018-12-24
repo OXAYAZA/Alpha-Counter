@@ -62,7 +62,7 @@ _Default: 3000_
 ##### refresh
 _Type: [Number](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Number)_  
 _Default: 30_  
-Counter element refresh rate in milliseconds.
+Counter element render interval in milliseconds.
 
 ##### formatter( value )
 _Type: [Function](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Function)_  
@@ -137,6 +137,103 @@ _Type: [Number](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Referenc
 _Default: 0_  
 Angle of circle progress (from 0 to 360 degrees inclusive).
 
+
+## αCountdown Usage
+Requires exactly 4 elements with attributes `data-counter-days`, `data-counter-hours`, `data-counter-minutes`, `data-counter-seconds` and exactly 4 svg-elements with attributes `data-progress-days`, `data-progress-hours`, `data-progress-minutes`, `data-progress-seconds`.  
+The latter must satisfy the conditions of the __αProgressCircle__.
+Just use and modify basic markup =)
+
+HTML markup for countdown:
+```html
+<div class="countdown">
+  <div class="countdown-block">
+    <svg class="countdown-circle" x="0px" y="0px" width="100px" height="100px" viewbox="0 0 100 100" data-progress-days>
+      <circle class="clipped" cx="50" cy="50" r="50" ></circle>
+    </svg>
+    <h1 class="countdown-counter" data-counter-days>00</h1>
+  </div>
+  <div class="countdown-block">
+    <svg class="countdown-circle" x="0px" y="0px" width="100px" height="100px" viewbox="0 0 100 100" data-progress-hours>
+      <circle class="clipped" cx="50" cy="50" r="50" ></circle>
+    </svg>
+    <h1 class="countdown-counter" data-counter-hours>00</h1>
+  </div>
+  <div class="countdown-block">
+    <svg class="countdown-circle" x="0px" y="0px" width="100px" height="100px" viewbox="0 0 100 100" data-progress-minutes>
+      <circle class="clipped" cx="50" cy="50" r="50" ></circle>
+    </svg>
+    <h1 class="countdown-counter" data-counter-minutes>00</h1>
+  </div>
+  <div class="countdown-block">
+    <svg class="countdown-circle" x="0px" y="0px" width="100px" height="100px" viewbox="0 0 100 100" data-progress-seconds>
+      <circle class="clipped" cx="50" cy="50" r="50" ></circle>
+    </svg>
+    <h1 class="countdown-counter" data-counter-seconds="">00</h1>
+  </div>
+</div>
+```
+
+Some basic styles:
+```css
+.countdown {
+    display: flex;
+    justify-content: center;
+    text-align: center;
+}
+```
+
+Simple initialization:
+```js
+aCountdown({
+    node: document.querySelector( '.countdown' ),
+    from: '2017-08-19',
+    to:   '2019-09-20'
+});
+```
+
+or with all options:
+```js
+var countdown = aCountdown({
+    node:  document.querySelector( '.countdown' ),
+    from:  '2017-08-19',
+    to:    '2019-09-20',
+    tick:  100,
+    onTick: function() { console.log( this ); }
+});
+```
+
+## αCountdown API
+
+#### aCountdown( options )
+Initializes the countdown and returns its instance.
+
+#### options
+_Type: [Object](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object)_  
+_Required_
+
+##### node
+_Type: [Element object](https://developer.mozilla.org/en-US/docs/Web/API/Element)_  
+_Required_  
+The main element that is processed by the aCountdown instance.
+
+##### from
+_Type: [String](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String)_  
+_Required_  
+Countdown start date. Must be in valid [format](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Date/parse).
+
+##### to
+_Type: [String](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String)_  
+_Required_  
+Countdown end date. Must be in valid [format](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Date/parse).
+
+##### tick
+_Type: [Number](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Number)_  
+_Default: 1000_  
+Countdown render interval in milliseconds.
+
+##### onTick
+_Type: [Function](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Function)_  
+Callback function that execute on each countdown render. The countdown instance serves as the context.
 
 ## License
 
