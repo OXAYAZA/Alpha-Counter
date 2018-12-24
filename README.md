@@ -6,12 +6,12 @@ Check out this [Demo](https://codepen.io/OXAYAZA/pen/JJryqW) to see they in acti
 
 ## αCounter Usage
 
-Simple HTML markup for counter:
+HTML markup for counter:
 ```html
 <span class="counter">99</span>
 ```
 
-Initialization:
+Simple initialization:
 ```js
 aCounter({ node: document.querySelector( '.counter' ) });
 ```
@@ -82,6 +82,9 @@ Callback function that execute when counting complete. The counter instance serv
 
 
 ## αProgressCircle Usage
+__αProgressCircle__ requires an initial SVG image size of 100 by 100 pixels.  
+The width and height attributes can be anything but the viewbox attribute should be `0 0 100 100`.  
+There must also be at least one SVG element with a clipped class.
 
 HTML markup for progress circle:
 ```html
@@ -121,7 +124,7 @@ The SVG element that is processed by the aProgressCircle instance.
 
 ##### clipped
 _Type: [String](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String)_  
-_Default: '.clipped' _  
+_Default: '.clipped'_  
 The selector of the SVG element to be clipped depending on the progress angle.
 
 ##### clipId
