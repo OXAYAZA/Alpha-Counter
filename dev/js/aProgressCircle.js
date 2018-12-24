@@ -52,10 +52,10 @@ function aProgressCircle ( data ) {
 
 	// Параметры по умолчанию
 	Circle.prototype.defaults = {
-		node:     null,
-		clipped:  '.clipped',
-		clipId:   Util.uId( 8 ),
-		angle: 0
+		node:    null,
+		clipped: '.clipped',
+		clipId:  Util.uId( 8 ),
+		angle:   0
 	};
 
 	Circle.prototype.calc = function() {

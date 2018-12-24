@@ -13,7 +13,7 @@ Simple HTML markup for counter:
 
 Initialization:
 ```js
-var counter = aCounter({ node: document.querySelector( '.counter' ) });
+aCounter({ node: document.querySelector( '.counter' ) });
 ```
 
 or with all options:
@@ -34,7 +34,7 @@ var counter = aCounter({
 ### αCounter API
 
 #### aCounter( options )
-Returns a counter instance.
+Initializes the counter and returns its instance.
 
 #### options
 _Type: [Object](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object)_  
@@ -79,6 +79,60 @@ Callback function that execute on each counter refresh. The counter instance ser
 ##### onComplete( value )
 _Type: [Function](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Function)_  
 Callback function that execute when counting complete. The counter instance serves as the context. The counter value serves as a parameter.
+
+
+## αProgressCircle Usage
+
+HTML markup for progress circle:
+```html
+<svg class="progress-circle" x="0px" y="0px" width="100" height="100" viewbox="0 0 100 100">
+    <circle class="clipped" cx="50" cy="50" r="50"></circle>
+</svg>
+```
+
+Simple initialization:
+```js
+aProgressCircle({ node: document.querySelector( '.progress-circle' ) });
+```
+
+or with all options:
+```js
+var progressCircle = aProgressCircle({
+    node:    document.querySelector( '.progress-circle' ),
+    clipped: '.clipped',
+    clipId:  'MyAwesomeId',
+    angle:   45
+});
+```
+
+## αProgressCircle API
+
+#### aProgressCircle( options )
+Initializes the svg progress circle and returns its instance.
+
+#### options
+_Type: [Object](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object)_  
+_Required_
+
+##### node
+_Type: [Element object](https://developer.mozilla.org/en-US/docs/Web/API/Element)_  
+_Required_  
+The SVG element that is processed by the aProgressCircle instance.
+
+##### clipped
+_Type: [String](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String)_  
+_Default: '.clipped' _  
+The selector of the SVG element to be clipped depending on the progress angle.
+
+##### clipId
+_Type: [String](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String)_  
+_Default: random eight-character string_  
+ID of the generated `<clipPath>` element.
+
+##### angle
+_Type: [Number](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Number)_  
+_Default: 0_  
+Angle of circle progress (from 0 to 360 degrees inclusive).
 
 
 ## License
