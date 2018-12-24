@@ -82,9 +82,7 @@ Callback function that execute when counting complete. The counter instance serv
 
 
 ## αProgressCircle Usage
-__αProgressCircle__ requires an initial SVG image size of 100 by 100 pixels.  
-The width and height attributes can be anything but the viewbox attribute should be `0 0 100 100`.  
-There must also be at least one SVG element with a clipped class.
+__αProgressCircle__ requires at least one SVG element with a clipped class.
 
 HTML markup for progress circle:
 ```html
