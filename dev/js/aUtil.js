@@ -2,7 +2,7 @@
 
 /**
  * @module  αUtil
- * @version v1.0.0
+ * @version v1.0.1
  * @desc    Сервисные функции для α-модулей
  * @author  OXAYAZA {@link https://github.com/OXAYAZA}
  * @license CC BY-SA 4.0 {@link https://creativecommons.org/licenses/by-sa/4.0/}
@@ -32,6 +32,7 @@ Util.inViewport = function ( element, cb ) {
  * @param {Array} sources - массив слияемых обьектов
  * @param {object} [options] - дополнительные опции
  * @param {Array} [options.except] - массив исключенных ключей
+ * @param {boolean} [options.skipNull] - пропуск значений null
  * @return {object} - новый обьект
  */
 Util.merge = function ( sources, options ) {
@@ -46,7 +47,9 @@ Util.merge = function ( sources, options ) {
 			if ( options.except && !options.except.indexOf( key ) ) {
 				continue;
 			} else if ( source[ key ] instanceof Object && !(source[ key ] instanceof Node) && !(source[ key ] instanceof Function) ) {
-				initial[ key ] = Navbar.merge( [ initial[ key ], source[ key ] ], options );
+				initial[ key ] = Util.merge( [ initial[ key ], source[ key ] ], options );
+			} else if ( options.skipNull && source[ key ] === null ) {
+				continue;
 			} else {
 				initial[ key ] = source[ key ];
 			}

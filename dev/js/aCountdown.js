@@ -2,7 +2,7 @@
 
 /**
  * @module   αCountdown
- * @version  v0.1.0
+ * @version  v0.1.1
  * @author   OXAYAZA {@link https://github.com/OXAYAZA}
  * @license  CC BY-SA 4.0 {@link https://creativecommons.org/licenses/by-sa/4.0/}
  * @requires module:αUtil
@@ -16,19 +16,19 @@
 function aCountdown ( data ) {
 	function Countdown ( data ) {
 		// Проверка наличия обязательных параметров
-		if ( !data || !data.node || typeof( data.from ) === 'undefined' || typeof( data.to ) === 'undefined' ) {
+		if ( !data || !data.node || typeof( data.to ) === 'undefined' ) {
 			throw Error( 'Missing of bad required αCountdown parameters (node, from, to).' );
 		}
 
 		// Слияние стандартных и полученных параметров
-		this.params = Util.merge( [ this.defaults, data ] );
+		this.params = Util.merge( [ this.defaults, data ], { skipNull: true } );
 
 		// Добавление ссылки на прототип в элемент
 		this.params.node.countdown = this;
 
 		// Получение значений времени
-		this.internal.from = new Date( this.params.from );
-		this.internal.to = new Date( this.params.to );
+		this.internal.to = Number( new Date( this.params.to ) );
+		this.internal.from = this.params.from ? Number( new Date( this.params.from ) ) : ( this.internal.to - this.constant.year );
 
 		// Получение счетчиков
 		for ( var key in this.internal.counters ) {
@@ -38,7 +38,7 @@ function aCountdown ( data ) {
 		// Получение и инициализация кругов прогресса
 		for ( var key in this.internal.circles ) {
 			this.internal.circles[ key ] = this.params.node.querySelector( '[data-progress-'+ key +']' );
-			aProgressCircle({ node: this.internal.circles[ key ] });
+			if( this.internal.circles[ key ] ) aProgressCircle({ node: this.internal.circles[ key ] });
 		}
 
 		this.run();
@@ -49,7 +49,7 @@ function aCountdown ( data ) {
 		from:   null,
 		to:     null,
 		tick:   1000,
-		count:  'until',
+		count:  'auto',
 		onTick: null
 	};
 
@@ -58,7 +58,8 @@ function aCountdown ( data ) {
 		second: 1000,
 		minute: 1000 * 60,
 		hour:   1000 * 60 * 60,
-		day:    1000 * 60 * 60 * 24
+		day:    1000 * 60 * 60 * 24,
+		year:   1000 * 60 * 60 * 24 * 365
 	};
 
 	// Служебные параметры
@@ -103,33 +104,43 @@ function aCountdown ( data ) {
 
 	// Пересчет времени
 	Countdown.prototype.calc = function () {
-		this.internal.now           = new Date();
-		this.internal.period.full   = this.internal.to - this.internal.from;
-		this.internal.period.now    = this.internal.to - this.internal.now;
-
 		this.internal.time.days     = this.internal.period.now/this.constant.day;
-		this.internal.angle.days    = (this.internal.period.now > 0) ? ( 360/~~(this.internal.period.full/this.constant.day ) * ~~this.internal.time.days ) || 0 : 0;
+		this.internal.angle.days    = ( 360/~~(this.internal.period.full/this.constant.day ) * ~~this.internal.time.days ) || 0;
 		this.internal.tmp.days      = ~~this.internal.time.days * this.constant.day;
 
 		this.internal.time.hours    = (this.internal.period.now - this.internal.tmp.days)/this.constant.hour;
-		this.internal.angle.hours   = (this.internal.period.now > 0) ? 360/24 * this.internal.time.hours : 0;
+		this.internal.angle.hours   = 360/24 * this.internal.time.hours;
 		this.internal.tmp.hours     = ~~this.internal.time.hours * this.constant.hour;
 
 		this.internal.time.minutes  = (this.internal.period.now - (this.internal.tmp.days + this.internal.tmp.hours))/this.constant.minute;
-		this.internal.angle.minutes = (this.internal.period.now > 0) ? 360/60 * this.internal.time.minutes : 0;
+		this.internal.angle.minutes = 360/60 * this.internal.time.minutes;
 		this.internal.tmp.minutes   = ~~this.internal.time.minutes * this.constant.minute;
 
 		this.internal.time.seconds  = (this.internal.period.now - (this.internal.tmp.days + this.internal.tmp.hours + this.internal.tmp.minutes))/this.constant.second;
-		this.internal.angle.seconds = (this.internal.period.now > 0) ? 360/60 * this.internal.time.seconds : 0;
+		this.internal.angle.seconds = 360/60 * this.internal.time.seconds;
+	};
+
+	// Определение временных промежутков
+	Countdown.prototype.mode = function () {
+		this.internal.now = Number( new Date() );
+
+		if ( this.internal.to > this.internal.now && [ 'auto', 'until' ].indexOf( this.params.count ) > -1 ) {
+			this.internal.period.full = this.internal.to - this.internal.from;
+			this.internal.period.now  = this.internal.to - this.internal.now;
+		} else if ( this.internal.to < this.internal.now && [ 'auto', 'since' ].indexOf( this.params.count ) > -1 ) {
+			this.internal.period.full = this.internal.to - this.internal.from;
+			this.internal.period.now  = this.internal.now - this.internal.to;
+		}
 	};
 
 	// Отрисовка счетчиков и кругов прогресса
 	Countdown.prototype.render = function () {
+		this.mode();
 		this.calc();
 
 		for ( var key in this.internal.counters ) {
-			this.internal.counters[ key ].innerText = ~~this.internal.time[ key ];
-			this.internal.circles[ key ].progressCircle.render( this.internal.angle[ key ] );
+			if ( this.internal.counters[ key ] ) this.internal.counters[ key ].innerText = ~~this.internal.time[ key ];
+			if ( this.internal.circles[ key ] ) this.internal.circles[ key ].progressCircle.render( this.internal.angle[ key ] );
 		}
 	};
 

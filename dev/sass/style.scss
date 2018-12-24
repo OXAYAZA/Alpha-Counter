@@ -168,33 +168,16 @@ body {
 
 .countdown-compact-circle {
 	display: block;
+	fill: transparent;
+	stroke: white;
+	stroke-width: 10px;
 }
 
-.countdown-compact-circle:not( .countdown-compact-circle-days ) {
+.countdown-compact-circle:not( :first-child ) {
 	position: absolute;
 	top: 50%;
 	left: 50%;
 	transform: translate( -50%, -50% );
-}
-
-.countdown-compact-circle-days {
-	width: 200px;
-	height: 200px;
-}
-
-.countdown-compact-circle-hours {
-	width: 180px;
-	height: 180px;
-}
-
-.countdown-compact-circle-minutes {
-	width: 160px;
-	height: 160px;
-}
-
-.countdown-compact-circle-seconds {
-	width: 140px;
-	height: 140px;
 }
 
 .countdown-compact-counters {

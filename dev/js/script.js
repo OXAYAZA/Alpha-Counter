@@ -116,7 +116,8 @@ document.addEventListener( 'DOMContentLoaded', function () {
 					node:  node,
 					from:  node.getAttribute( 'data-from' ),
 					to:    node.getAttribute( 'data-to' ),
-					tick:  100
+					count: node.getAttribute( 'data-count' ),
+					tick:  100,
 				});
 		}
 	}
