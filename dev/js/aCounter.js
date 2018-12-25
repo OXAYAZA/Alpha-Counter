@@ -9,6 +9,9 @@
  * @see      {@link https://github.com/OXAYAZA/Alpha-Counter}
  * @see      {@link https://codepen.io/OXAYAZA/pen/JJryqW}
  * @see      {@link https://www.linkedin.com/in/%D1%8E%D1%80%D0%B8%D0%B9-%D0%B1%D0%B0%D0%B7%D0%B0%D0%B5%D0%B2-166479165/}
+ *
+ * @todo     float numbers
+ * @todo     merge skips null
  */
 function aCounter ( data ) {
 	function Counter ( data ) {

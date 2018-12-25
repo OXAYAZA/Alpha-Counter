@@ -1,18 +1,18 @@
 "use strict";
 
 var plugins = {
-	counters:       document.querySelectorAll( '.counter' ),
+	counter:        document.querySelectorAll( '.counter' ),
 	progressLinear: document.querySelectorAll( '.progress-linear' ),
 	progressCircle: document.querySelectorAll( '.progress-circle' ),
-	countDown:      document.querySelectorAll( '[data-countdown]' )
+	countdown:      document.querySelectorAll( '[data-countdown]' )
 };
 
 document.addEventListener( 'DOMContentLoaded', function () {
 	// Counter
-	if ( plugins.counters ) {
-		for ( var i = 0; i < plugins.counters.length; i++ ) {
+	if ( plugins.counter ) {
+		for ( var i = 0; i < plugins.counter.length; i++ ) {
 			var
-				node = plugins.counters[i],
+				node = plugins.counter[i],
 				counter = aCounter({
 					node: node,
 					duration: 1000,
@@ -108,10 +108,10 @@ document.addEventListener( 'DOMContentLoaded', function () {
 	}
 
 	// Countdown
-	if ( plugins.countDown.length ) {
-		for ( var i = 0; i < plugins.countDown.length; i++) {
+	if ( plugins.countdown.length ) {
+		for ( var i = 0; i < plugins.countdown.length; i++) {
 			var
-				node = plugins.countDown[i],
+				node = plugins.countdown[i],
 				countdown = aCountdown({
 					node:  node,
 					from:  node.getAttribute( 'data-from' ),

@@ -184,7 +184,6 @@ Simple initialization:
 ```js
 aCountdown({
     node: document.querySelector( '.countdown' ),
-    from: '2017-08-19',
     to:   '2019-09-20'
 });
 ```
@@ -216,7 +215,6 @@ The main element that is processed by the aCountdown instance.
 
 ##### from
 _Type: [String](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String)_  
-_Required_  
 Countdown start date. Must be in valid [format](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Date/parse).
 
 ##### to
