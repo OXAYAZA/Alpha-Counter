@@ -13,6 +13,6 @@
 	"author": "OXAYAZA",
 	"license": "MIT",
 	"dependencies": {
-		"tempaw-functions": "2.3.0"
+		"tempaw-functions": "2.3.1"
 	}
 }

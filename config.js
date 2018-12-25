@@ -1,4 +1,7 @@
 const
+	fs     = require( 'fs' ),
+	path   = require( 'path' ),
+	glob   = require( 'glob' ),
 	action = require( 'tempaw-functions' ).action,
 	preset = require( 'tempaw-functions' ).preset;
 
@@ -107,6 +110,24 @@ module.exports = {
 		showTask: false,
 	},
 	buildRules: {
+		'dist': [
+			action.clean({ src: `dist` }),
+			action.minifyJs({ src: `dev/js/a*.js`, dest: `dist` }),
+			{ // Add comment
+				execute: function( end ) {
+					let paths = glob.sync( `dev/js/a*.js` );
+					paths.forEach( function( item ) {
+						let
+							fname   = `dist/`+ path.basename( item, '.js' ) +`.min.js`,
+							comment = fs.readFileSync( item, 'utf8' ).match( /\/\*\*(.|\s)*?\*\// )[0],
+							content = fs.readFileSync(  fname, 'utf8' );
+
+						fs.writeFileSync( fname, comment +'\n'+ content.replace( /(['"])use strict\1;/, '' ) );
+					});
+					end();
+				}
+			}
+		],
 		'util-backup': [
 			action.pack({
 				src: [ 'dev/**/*', '*.*' ], dest: 'versions/',
