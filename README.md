@@ -1,7 +1,7 @@
 # αCounters
 
-Customizable counters, progress circles and countdown.  
-Check out this [Demo](https://codepen.io/OXAYAZA/pen/JJryqW) to see they in action!
+Customizable counters, progress circles, and countdown.  
+Check out this [Demo](https://codepen.io/OXAYAZA/pen/JJryqW) to see them in action!
 
 
 ## αCounter Usage
@@ -52,7 +52,7 @@ The number from which the count begins.
 
 ##### to
 _Type: [Number](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Number)_  
-The number to which the count ends. If the parameter is not specified, the counter will try to get it from the element. Otherwise, an error is thrown.
+The number, with which the count ends. If the parameter is not specified, the counter will try to get it from the element. Otherwise, an error is thrown.
 
 ##### duration
 _Type: [Number](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Number)_  
@@ -66,19 +66,19 @@ Counter element render interval in milliseconds.
 
 ##### formatter( value )
 _Type: [Function](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Function)_  
-A callback function that serving as a counter value formatter. Must return a modified counter value (for example, added prefix). The counter instance serves as the context.
+A callback function that serves as a counter value formatter. Must return a modified counter value (for example, added prefix). The counter instance serves as the context.
 
 ##### onStart( value )
 _Type: [Function](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Function)_  
-Callback function that execute before count starting. The counter instance serves as the context. The counter value serves as a parameter.
+Callback function that is executed before the count starts. The counter instance serves as the context. The counter value serves as a parameter.
 
 ##### onUpdate( value )
 _Type: [Function](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Function)_  
-Callback function that execute on each counter refresh. The counter instance serves as the context. The counter value serves as a parameter.
+Callback function that is executed on each counter refresh. The counter instance serves as the context. The counter value serves as a parameter.
 
 ##### onComplete( value )
 _Type: [Function](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Function)_  
-Callback function that execute when counting complete. The counter instance serves as the context. The counter value serves as a parameter.
+Callback function that is executed when counting is complete. The counter instance serves as the context. The counter value serves as a parameter.
 
 
 ## αProgressCircle Usage
@@ -109,7 +109,7 @@ var progressCircle = aProgressCircle({
 ## αProgressCircle API
 
 #### aProgressCircle( options )
-Initializes the svg progress circle and returns its instance.
+Initializes the SVG progress circle and returns its instance.
 
 #### options
 _Type: [Object](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object)_  
@@ -231,7 +231,8 @@ Countdown render interval in milliseconds.
 
 ##### onTick
 _Type: [Function](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Function)_  
-Callback function that execute on each countdown render. The countdown instance serves as the context.
+Callback function that is executed on each countdown render. The countdown instance serves as the context.
+
 
 ## License
 
