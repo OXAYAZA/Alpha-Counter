@@ -6,9 +6,9 @@
  * @author   OXAYAZA {@link https://github.com/OXAYAZA}
  * @license  CC BY-SA 4.0 {@link https://creativecommons.org/licenses/by-sa/4.0/}
  * @requires module:αUtil
- * @see      {@link https://github.com/OXAYAZA/Alpha-Counter}
+ * @see      {@link https://oxayaza.page.link/gitHub_aCounters}
  * @see      {@link https://codepen.io/OXAYAZA/pen/JJryqW}
- * @see      {@link https://www.linkedin.com/in/%D1%8E%D1%80%D0%B8%D0%B9-%D0%B1%D0%B0%D0%B7%D0%B0%D0%B5%D0%B2-166479165/}
+ * @see      {@link https://oxayaza.page.link/linkedin}
  *
  * @todo     float numbers
  * @todo     merge skips null
