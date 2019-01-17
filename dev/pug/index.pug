@@ -14,6 +14,10 @@ block page
 					to: '2018-12-20T00:25:30'
 				})
 
+		section: .block: a.git-hub-link( href='https://github.com/OXAYAZA/Alpha-Counter', target='_blank' )
+			+git-hub-logo
+			span GitHub
+
 		section.section: .container
 			- for( var i = 0; i < 100; i++ )
 				- cfg.color = randHEX();

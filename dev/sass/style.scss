@@ -11,6 +11,11 @@ body {
 	color: white;
 }
 
+a {
+	color: white;
+	text-decoration: none;
+}
+
 .page {
 	display: flex;
 	flex-direction: column;
@@ -196,4 +201,32 @@ body {
 	&:not(:last-child)::after {
 		content: ':';
 	}
+}
+
+.git-hub-link {
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	padding: 5px 10px 5px 5px;
+	border: 2px solid white;
+	border-radius: 40px;
+	letter-spacing: .1em;
+	fill: white;
+	transition: .2s;
+
+	* + * {
+		margin-left: 5px;
+	}
+
+	&:hover {
+		fill: black;
+		color: black;
+		background: white;
+	}
+}
+
+.git-hub-logo {
+	display: block;
+	position: relative;
+	top: -.5px;
 }
