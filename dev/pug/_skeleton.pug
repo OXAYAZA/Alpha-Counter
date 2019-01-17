@@ -11,7 +11,7 @@ html( lang='en' )
 			title= pageName
 
 		meta( name='viewport', content='width=device-width, height=device-height, initial-scale=1.0' )
-		meta( http-equiv='X-UA-Compatible' content='IE=11' )
+		meta( http-equiv='X-UA-Compatible' content='IE=Edge' )
 		meta( charset='utf-8' )
 
 		link( rel='stylesheet', href='css/style.css' )
@@ -20,6 +20,7 @@ html( lang='en' )
 		.page
 			block page
 
+		script( src='js/polyfill-CustomEvent.js' )
 		script( src='js/aUtil.js' )
 		script( src='js/aCounter.js' )
 		script( src='js/aProgressCircle.js' )

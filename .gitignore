@@ -1,4 +1,5 @@
-.idea
-node_modules
-versions
-sources
+/.idea
+/node_modules
+/versions
+/sources
+/package-lock.json

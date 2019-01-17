@@ -19,6 +19,7 @@ block page
 				- cfg.color = randHEX();
 				- cfg.number = rand( 100 );
 				.block
-					+counter( cfg.number, cfg.color )
-					+progress-linear( cfg.placeholders[ rand( cfg.placeholders.length ) ], cfg.number, cfg.color )
-					+progress-circle( cfg.number, cfg.color )
+					+counter( cfg.number, cfg.color )( id= `counter${i}` )
+					+progress-linear( cfg.placeholders[ rand( cfg.placeholders.length ) ], cfg.color, `#counter${i}` )
+					+progress-circle( cfg.color, `#counter${i}` )
+					+progress-circle-2( cfg.color, `#counter${i}` )

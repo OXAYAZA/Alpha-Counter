@@ -2,7 +2,7 @@
 
 /**
  * @module  αUtil
- * @version v1.0.1
+ * @version 1.0.1
  * @desc    Сервисные функции для α-модулей
  * @author  OXAYAZA {@link https://github.com/OXAYAZA}
  * @license CC BY-SA 4.0 {@link https://creativecommons.org/licenses/by-sa/4.0/}

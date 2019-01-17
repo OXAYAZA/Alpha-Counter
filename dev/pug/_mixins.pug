@@ -1,25 +1,31 @@
 //- Counter
 mixin counter( value, color )
 	- if ( color ) attributes.style = `border-color: ${color}`;
-	.counter( contenteditable='true' )&attributes( attributes )= value
+	h2.counter( contenteditable='true' )&attributes( attributes )= value
 
-//- Linear Progress bar
-mixin progress-linear( title, value, color )
-	- if ( color ) var barAttributes = { style: `background-color: ${color}` };
+//- Progress Linear
+mixin progress-linear( title, color, counter )
+	-
+		var barAttributes = {};
+		if ( color ) barAttributes.style = `background-color: ${color}`;
+		if ( counter ) barAttributes[ 'data-counter' ] = counter;
 	.progress-linear&attributes( attributes )
-		.progress-linear-header
-			h4.progress-linear-title= title
-			h2.progress-linear-counter( contenteditable='true' )= value
+		h4.progress-linear-header= title 
 		.progress-linear-body
 			.progress-linear-bar&attributes( barAttributes )
 
-//- Circle Progress
-mixin progress-circle( value, color )
-	.progress-circle&attributes( attributes )
-		svg.progress-circle-bar( x='0', y='0', width='100', height='100', viewbox='0 0 100 100' )
-			circle.clipped( cx=50, cy=50, r=50, fill= color )
-		.progress-circle-decor
-		h2.progress-circle-counter( contenteditable='true' )= value
+//- Progress Circle
+mixin progress-circle( color, counter )
+	svg.progress-circle( x='0', y='0', width='100', height='100', viewbox='0 0 100 100', data-counter= counter )&attributes( attributes )
+		circle.bg( cx=50, cy=50, r=45 )
+		circle.clipped( cx=50, cy=50, r=50, fill= color )
+
+//- Progress Circle variant 2
+mixin progress-circle-2( color, counter )
+	svg.progress-circle-2( x='0', y='0', width='100', height='100', viewbox='0 0 100 100', data-counter= counter )&attributes( attributes )
+		circle.bg( cx=50, cy=50, r=45, stroke= color )
+		circle.fg.clipped( cx=50, cy=50, r=45, stroke= color )
+		circle.dot( cx=50, cy=5, r=5, fill= color )
 
 //- Countdown
 mixin countdown( data )
