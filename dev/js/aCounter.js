@@ -11,6 +11,7 @@
  * @see      {@link https://oxayaza.page.link/linkedin}
  *
  * @todo     merge skips null
+ * @todo     manual start
  */
 function aCounter ( data ) {
 	function Counter ( data ) {
