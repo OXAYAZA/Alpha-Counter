@@ -2,7 +2,7 @@
 
 /**
  * @module   αCounter
- * @version  0.1.2
+ * @version  0.1.3
  * @author   OXAYAZA {@link https://github.com/OXAYAZA}
  * @license  CC BY-SA 4.0 {@link https://creativecommons.org/licenses/by-sa/4.0/}
  * @requires module:αUtil
@@ -10,7 +10,6 @@
  * @see      {@link https://codepen.io/OXAYAZA/pen/JJryqW}
  * @see      {@link https://oxayaza.page.link/linkedin}
  *
- * @todo     float numbers
  * @todo     merge skips null
  */
 function aCounter ( data ) {
@@ -26,7 +25,7 @@ function aCounter ( data ) {
 
 		// Если не задано значение счетчика то попробовать определить его из содержимого
 		if ( !this.params.to ) {
-			try { this.params.to = parseInt( this.params.node.textContent, 10 ); }
+			try { this.params.to = parseFloat( this.params.node.textContent, 10 ); }
 			catch ( error ) { throw Error( 'Unable to get aCounter value' ) }
 		}
 
@@ -107,7 +106,7 @@ function aCounter ( data ) {
 	// Отрисовка значения счетчика
 	Counter.prototype.render = function () {
 		if ( this.params.formatter instanceof Function ) {
-			this.params.node.innerHTML = this.params.formatter.call( this, ~~this.internal.value );
+			this.params.node.innerHTML = this.params.formatter.call( this, this.internal.value );
 		} else {
 			this.params.node.innerHTML = ~~this.internal.value;
 		}
