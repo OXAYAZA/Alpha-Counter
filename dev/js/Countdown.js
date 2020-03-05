@@ -1,17 +1,52 @@
 "use strict";
 
 /**
- * @module   αCountdown
- * @version  0.1.1
+ * @module   Countdown
+ * @version  0.2.0
  * @author   OXAYAZA {@link https://github.com/OXAYAZA}
  * @license  CC BY-SA 4.0 {@link https://creativecommons.org/licenses/by-sa/4.0/}
- * @requires module:αUtil
- * @requires module:αProgressCircle
+ * @requires module:ProgressCircle
  * @see      {@link https://oxayaza.page.link/gitHub_aCounters}
  * @see      {@link https://codepen.io/OXAYAZA/pen/JJryqW}
  * @see      {@link https://oxayaza.page.link/linkedin}
  */
-function aCountdown ( data ) {
+( function () {
+	/**
+	 * Слияние обьектов
+	 * @param {Array} sources - массив слияемых обьектов
+	 * @param {object} [options] - дополнительные опции
+	 * @param {Array} [options.except] - массив исключенных ключей
+	 * @param {boolean} [options.skipNull] - пропуск значений null
+	 * @return {object} - новый обьект
+	 */
+	function merge ( sources, options ) {
+		options = options || {};
+		var initial = {};
+
+		for ( var s = 0; s < sources.length; s++ ) {
+			var source = sources[ s ];
+			if ( !source ) continue;
+
+			for ( var key in source ) {
+				if ( options.except && !options.except.indexOf( key ) ) {
+					continue;
+				} else if ( source[ key ] instanceof Object && !(source[ key ] instanceof Node) && !(source[ key ] instanceof Function) ) {
+					initial[ key ] = merge( [ initial[ key ], source[ key ] ], options );
+				} else if ( options.skipNull && source[ key ] === null ) {
+					continue;
+				} else {
+					initial[ key ] = source[ key ];
+				}
+			}
+		}
+
+		return initial;
+	}
+
+	/**
+	 * @param data
+	 * @constructor
+	 */
 	function Countdown ( data ) {
 		// Проверка наличия обязательных параметров
 		if ( !data || !data.node || typeof( data.to ) === 'undefined' ) {
@@ -19,7 +54,7 @@ function aCountdown ( data ) {
 		}
 
 		// Слияние стандартных и полученных параметров
-		this.params = Util.merge( [ this.defaults, data ], { skipNull: true } );
+		this.params = merge( [ this.defaults, data ], { skipNull: true } );
 
 		// Добавление ссылки на прототип в элемент
 		this.params.node.countdown = this;
@@ -36,7 +71,7 @@ function aCountdown ( data ) {
 		// Получение и инициализация кругов прогресса
 		for ( var key in this.internal.circles ) {
 			this.internal.circles[ key ] = this.params.node.querySelector( '[data-progress-'+ key +']' );
-			if( this.internal.circles[ key ] ) aProgressCircle({ node: this.internal.circles[ key ] });
+			if( this.internal.circles[ key ] ) new ProgressCircle({ node: this.internal.circles[ key ] });
 		}
 
 		this.run();
@@ -137,8 +172,13 @@ function aCountdown ( data ) {
 		this.calc();
 
 		for ( var key in this.internal.counters ) {
-			if ( this.internal.counters[ key ] ) this.internal.counters[ key ].innerText = ~~this.internal.time[ key ];
-			if ( this.internal.circles[ key ] ) this.internal.circles[ key ].progressCircle.render( this.internal.angle[ key ] );
+			if ( this.internal.counters[ key ] ) {
+				this.internal.counters[ key ].innerText = ~~this.internal.time[ key ];
+			}
+
+			if ( this.internal.circles[ key ] ) {
+				this.internal.circles[ key ].progressCircle.render( this.internal.angle[ key ] );
+			}
 		}
 	};
 
@@ -152,5 +192,9 @@ function aCountdown ( data ) {
 		}).bind( this ), this.params.tick );
 	};
 
-	return new Countdown( data );
-}
+	if ( !window.Countdown ) {
+		window.Countdown = Countdown;
+	} else {
+		throw new Error( 'Countdown variable is occupied' );
+	}
+})();

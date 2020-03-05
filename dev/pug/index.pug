@@ -1,29 +1,29 @@
-extends _skeleton
+include _mixins
 
-block page
-	.page
+doctype html
+html( lang='en' )
+	head
+		title Alpha Count
 
-		section.section: .container
-			.block
-				+countdown({
-					from:  '2018-12-01',
-					to:    '2019-01-24T19:34:30',
-					color: randHEX()
-				})
-				+countdown-compact({
-					to: '2018-12-20T00:25:30'
-				})
+		meta( name='viewport', content='width=device-width, height=device-height, initial-scale=1.0' )
+		meta( http-equiv='X-UA-Compatible' content='IE=Edge' )
+		meta( charset='utf-8' )
 
-		section: .block: a.git-hub-link( href='https://oxayaza.page.link/gitHub_aCounters', target='_blank' )
-			+git-hub-logo
-			span GitHub
+		link( rel='stylesheet', href='css/style.css' )
 
-		section.section: .container
-			- for( var i = 0; i < 100; i++ )
-				- cfg.color = randHEX();
-				- cfg.number = rand( 100 );
-				.block
-					+counter( cfg.number, cfg.color )( id= `counter${i}` )
-					+progress-linear( cfg.placeholders[ rand( cfg.placeholders.length ) ], cfg.color, `#counter${i}` )
-					+progress-circle( cfg.color, `#counter${i}` )
-					+progress-circle-2( cfg.color, `#counter${i}` )
+		script( src='js/polyfill-CustomEvent.js' )
+		script( src='js/Counter.js' )
+		script( src='js/ProgressCircle.js' )
+		script( src='js/Countdown.js' )
+		script( src='js/script.js' )
+
+	body
+		.page
+			section.section
+				.container
+					.block
+						+countdown({ from: '2017-08-19', to: '2019-09-20' })
+
+					.block
+						+counter( 100 )
+						+progress-circle( 180 )

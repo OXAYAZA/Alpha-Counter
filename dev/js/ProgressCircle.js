@@ -1,22 +1,71 @@
 "use strict";
 
 /**
- * @module   αProgressCircle
- * @version  0.1.1
+ * @module   ProgressCircle
+ * @version  0.2.0
  * @author   OXAYAZA {@link https://github.com/OXAYAZA}
  * @license  CC BY-SA 4.0 {@link https://creativecommons.org/licenses/by-sa/4.0/}
- * @requires module:αUtil
  * @see      {@link https://oxayaza.page.link/gitHub_aCounters}
  * @see      {@link https://codepen.io/OXAYAZA/pen/JJryqW}
  * @see      {@link https://oxayaza.page.link/linkedin}
  */
-function aProgressCircle ( data ) {
-	function Circle( data ) {
+( function () {
+	/**
+	 * Создание случайного идентификатора
+	 * @param {number} length - длинна идентификатора
+	 * @return {string}
+	 */
+	function uId ( length ) {
+		var uId = '';
+		for ( var i = 0; i < length; i++ ) uId += String.fromCharCode( 97 + Math.random() * 25 );
+		return uId;
+	}
+
+	/**
+	 * Слияние обьектов
+	 * @param {Array} sources - массив слияемых обьектов
+	 * @param {object} [options] - дополнительные опции
+	 * @param {Array} [options.except] - массив исключенных ключей
+	 * @param {boolean} [options.skipNull] - пропуск значений null
+	 * @return {object} - новый обьект
+	 */
+	function merge ( sources, options ) {
+		options = options || {};
+		var initial = {};
+
+		for ( var s = 0; s < sources.length; s++ ) {
+			var source = sources[ s ];
+			if ( !source ) continue;
+
+			for ( var key in source ) {
+				if ( options.except && !options.except.indexOf( key ) ) {
+					continue;
+				} else if ( source[ key ] instanceof Object && !(source[ key ] instanceof Node) && !(source[ key ] instanceof Function) ) {
+					initial[ key ] = merge( [ initial[ key ], source[ key ] ], options );
+				} else if ( options.skipNull && source[ key ] === null ) {
+					continue;
+				} else {
+					initial[ key ] = source[ key ];
+				}
+			}
+		}
+
+		return initial;
+	}
+
+	/**
+	 * @param data
+	 * @constructor
+	 */
+	function ProgressCircle( data ) {
 		// Проверка наличия обязательных параметров
 		if ( !data || !data.node ) throw Error( 'Missing required αProgressCircle parameters (node).' );
 
 		// Слияние стандартных и полученных параметров
-		this.params = Util.merge( [ this.defaults, data ] );
+		this.params = merge( [ this.defaults, data ] );
+
+		// Создание уникального идентификатора
+		if ( !this.params.clipId ) this.params.clipId = uId( 8 );
 
 		// Добавление ссылки на прототип в элемент
 		this.params.node.progressCircle = this;
@@ -46,7 +95,7 @@ function aProgressCircle ( data ) {
 	}
 
 	// Служебные параметры
-	Circle.prototype.internal = {
+	ProgressCircle.prototype.internal = {
 		viewBox: [ 0, 0, 100, 100 ],
 		ellipse: {
 			rx: 72,
@@ -63,19 +112,19 @@ function aProgressCircle ( data ) {
 	};
 
 	// Параметры по умолчанию
-	Circle.prototype.defaults = {
+	ProgressCircle.prototype.defaults = {
 		node:    null,
 		clipped: '.clipped',
-		clipId:  Util.uId( 8 ),
+		clipId:  null,
 		angle:   0
 	};
-
-	Circle.prototype.calc = function() {
+	
+	ProgressCircle.prototype.calc = function() {
 		this.internal.x = Math.sin( this.params.angle * Math.PI/180 ) * this.internal.ellipse.rx + this.internal.ellipse.cx;
 		this.internal.y = -Math.cos( this.params.angle * Math.PI/180 ) * this.internal.ellipse.ry + this.internal.ellipse.cy;
 	};
 
-	Circle.prototype.genPath = function() {
+	ProgressCircle.prototype.genPath = function() {
 		if ( this.params.angle >= -360 && this.params.angle < -180 ) {
 			this.internal.pathD =
 				'M '+ this.internal.ellipse.cx +' '+ this.internal.ellipse.cy +
@@ -106,12 +155,16 @@ function aProgressCircle ( data ) {
 		}
 	};
 
-	Circle.prototype.render = function( angle ) {
+	ProgressCircle.prototype.render = function( angle ) {
 		if ( typeof( angle ) === 'number' ) this.params.angle = angle;
 		this.calc();
 		this.genPath();
-		this.internal.path.setAttribute( 'd', this.internal.pathD );
+		this.internal.path.setAttribute( 'd', this.internal.pathD );		
 	};
 
-	return new Circle( data );
-}
+	if ( !window.ProgressCircle ) {
+		window.ProgressCircle = ProgressCircle;
+	} else {
+		throw new Error( 'ProgressCircle variable is occupied' );
+	}
+})();

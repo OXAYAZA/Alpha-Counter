@@ -1,64 +1,31 @@
 //- Counter
-mixin counter( value, color )
-	- if ( color ) attributes.style = `border-color: ${color}`;
-	h2.counter( contenteditable='true' )&attributes( attributes )= value
+mixin counter( value )
+	h2.counter&attributes( attributes )= value
 
-//- Progress Linear
-mixin progress-linear( title, color, counter )
-	-
-		var barAttributes = {};
-		if ( color ) barAttributes.style = `background-color: ${color}`;
-		if ( counter ) barAttributes[ 'data-counter' ] = counter;
-	.progress-linear&attributes( attributes )
-		h4.progress-linear-header= title 
-		.progress-linear-body
-			.progress-linear-bar&attributes( barAttributes )
 
 //- Progress Circle
-mixin progress-circle( color, counter )
-	svg.progress-circle( x='0', y='0', width='100', height='100', viewbox='0 0 100 100', data-counter= counter )&attributes( attributes )
-		circle.bg( cx=50, cy=50, r=45 )
-		circle.clipped( cx=50, cy=50, r=50, fill= color )
+mixin progress-circle( value )
+	svg.progress-circle( x='0', y='0', width='100', height='100', viewbox='0 0 100 100', data-value= value )&attributes( attributes )
+		circle.bg( cx=50, cy=50, r=49 )
+		circle.fg.clipped( cx=50, cy=50, r=50 )
 
-//- Progress Circle variant 2
-mixin progress-circle-2( color, counter )
-	svg.progress-circle-2( x='0', y='0', width='100', height='100', viewbox='0 0 100 100', data-counter= counter )&attributes( attributes )
-		circle.bg( cx=50, cy=50, r=45, stroke= color )
-		circle.fg.clipped( cx=50, cy=50, r=45, stroke= color )
-		circle.dot( cx=50, cy=5, r=5, fill= color )
 
 //- Countdown
 mixin countdown( data )
 	.countdown( data-countdown data-from= data.from, data-to= data.to, data-count= data.count )
 		each value in [ 'days', 'hours', 'minutes', 'seconds' ]
-			- var counterAttr = {}; counterAttr[ 'data-counter-'+ value ] = '';
-			- var circleAttr = {}; circleAttr[ 'data-progress-'+ value ] = '';
+			-
+				var
+					counterAttr = {},
+					circleAttr = {};
+
+				counterAttr[ 'data-counter-'+ value ] = '';
+				circleAttr[ 'data-progress-'+ value ] = '';
+
 			.countdown-block
 				svg.countdown-circle( x='0', y='0', width='100', height='100', viewbox='0 0 100 100' )&attributes( circleAttr )
-					circle.clipped( cx=50, cy=50, r=50, fill= data.color )
-				.countdown-wrap
+					circle.bg( cx=50, cy=50, r=49 )
+					circle.fg.clipped( cx=50, cy=50, r=50 )
+				.countdown-inner
 					h1.countdown-counter&attributes( counterAttr ) 00
 					h6.countdown-title= value
-
-//- Countdown Compact
-mixin countdown-compact( data )
-	.countdown-compact( data-countdown data-from= data.from, data-to= data.to, data-count= data.count )
-		.countdown-compact-circles
-			svg.countdown-compact-circle( x='0', y='0', width='200', height='200', viewbox='0 0 200 200', data-progress-seconds )
-				circle.clipped( cx=100, cy=100, r=94, stroke= randHEX() )
-			svg.countdown-compact-circle( x='0', y='0', width='180', height='180', viewbox='0 0 180 180', data-progress-minutes )
-				circle.clipped( cx=90, cy=90, r=83, stroke= randHEX() )
-			svg.countdown-compact-circle( x='0', y='0', width='160', height='160', viewbox='0 0 160 160', data-progress-hours )
-				circle.clipped( cx=80, cy=80, r=72, stroke= randHEX() )
-			svg.countdown-compact-circle( x='0', y='0', width='140', height='140', viewbox='0 0 140 140', data-progress-days )
-				circle.clipped( cx=70, cy=70, r=61, stroke= randHEX() )
-		.countdown-compact-counters
-			h1.countdown-compact-counter( data-counter-days ) 00
-			h1.countdown-compact-counter( data-counter-hours ) 00
-			h1.countdown-compact-counter( data-counter-minutes ) 00
-			h1.countdown-compact-counter( data-counter-seconds ) 00
-
-//- GitHub Logo
-mixin git-hub-logo
-	svg.git-hub-logo( x='0', y='0', width='32.579px', height='31.775px', viewBox='0 0 32.579 31.775' )
-		path( d='M16.288,0C7.294,0,0,7.293,0,16.291 c0,7.196,4.667,13.302,11.141,15.456c0.815,0.149,1.112-0.353,1.112-0.785c0-0.387-0.014-1.411-0.022-2.77 c-4.531,0.984-5.487-2.184-5.487-2.184c-0.741-1.882-1.809-2.383-1.809-2.383c-1.479-1.011,0.112-0.99,0.112-0.99 c1.635,0.115,2.495,1.679,2.495,1.679c1.453,2.489,3.813,1.771,4.741,1.354c0.148-1.053,0.569-1.771,1.034-2.178 c-3.617-0.411-7.42-1.809-7.42-8.051c0-1.778,0.635-3.232,1.677-4.371c-0.168-0.412-0.727-2.068,0.16-4.311 c0,0,1.368-0.438,4.479,1.67c1.299-0.361,2.693-0.542,4.078-0.548c1.383,0.006,2.777,0.187,4.078,0.548 c3.11-2.108,4.475-1.67,4.475-1.67c0.889,2.243,0.33,3.899,0.162,4.311c1.044,1.139,1.674,2.593,1.674,4.371 c0,6.258-3.809,7.635-7.438,8.038c0.585,0.503,1.106,1.497,1.106,3.017c0,2.178-0.02,3.935-0.02,4.469 c0,0.436,0.293,0.942,1.12,0.783c6.467-2.158,11.13-8.26,11.13-15.454C32.579,7.293,25.285,0,16.288,0z' )

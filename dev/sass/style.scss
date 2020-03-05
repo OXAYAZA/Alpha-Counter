@@ -1,3 +1,8 @@
+// Variables
+$bg: black;
+$fg: #414243;
+
+
 /** @section Base */
 * {
 	box-sizing: border-box;
@@ -38,10 +43,6 @@ a {
 	align-items: center;
 	justify-content: center;
 
-	> .progress-linear {
-		flex-grow: 1;
-	}
-
 	> * + * {
 		margin-left: 40px;
 	}
@@ -56,70 +57,27 @@ a {
 .counter {
 	min-width: 100px;
 	padding: 10px 15px;
-	border: 3px solid white;
+	border: 3px solid $fg;
 	border-radius: 10px;
 	text-align: center;
 }
 
 
-/** @section Progress linear */
-.progress-linear-header {
-	letter-spacing: .1em;
-}
-
-.progress-linear-body {
-	height: 14px;
-	border-radius: 6px;
-	margin-top: 5px;
-	overflow: hidden;
-	background: rgba(black,.3);
-}
-
-.progress-linear-bar {
-	height: 100%;
-	width: 0;
-	max-width: 100%;
-	border-radius: 5px;
-	transition: 1s;
-	background: white;
-}
-
-
 /** @section Progress Circle */
+.good-circle,
 .progress-circle {
 	flex-shrink: 0;
 	height: auto;
 	border-radius: 50%;
-	fill: white;
 
 	.bg {
-		fill: rgba(black,.3);
-	}
-}
-
-.progress-circle-2 {
-	flex-shrink: 0;
-	display: block;
-	height: auto;
-	fill: none;
-	stroke-width: 10px;
-
-	.bg {
-		stroke: black;
+		fill: $bg;
 	}
 
 	.fg {
-		stroke-width: 5px;
-		stroke-dasharray: 9 1;
-	}
-
-	.dot {
-		stroke-width: 2px;
-		stroke: black;
+		fill: $fg;
 	}
 }
-
-
 
 /** @section Countdown */
 .countdown {
@@ -135,7 +93,7 @@ a {
 	padding: 0 15px;
 }
 
-.countdown-wrap {
+.countdown-inner {
 	position: absolute;
 	top: 0;
 	bottom: 0;
@@ -147,86 +105,17 @@ a {
 }
 
 .countdown-circle {
-	border-radius: 50%;
-	background: rgba(black,.3);
+	display: block;
+
+	.bg {
+		fill: $bg;
+	}
+
+	.fg {
+		fill: $fg;
+	}
 }
 
 .countdown-title {
 	text-transform: uppercase;
-}
-
-.countdown-counter,
-.countdown-title {
-	text-shadow: 0 0 5px black;
-}
-
-
-/** @section Countdown Compact */
-.countdown-compact {
-	position: relative;
-	display: flex;
-	justify-content: center;
-}
-
-.countdown-compact-circles {
-	position: relative;
-	background: rgba(black,.3);
-	border-radius: 50%;
-}
-
-.countdown-compact-circle {
-	display: block;
-	fill: transparent;
-	stroke: white;
-	stroke-width: 10px;
-}
-
-.countdown-compact-circle:not( :first-child ) {
-	position: absolute;
-	top: 50%;
-	left: 50%;
-	transform: translate( -50%, -50% );
-}
-
-.countdown-compact-counters {
-	position: absolute;
-	top: 50%;
-	left: 50%;
-	transform: translate( -50%, -50% );
-	display: flex;
-	text-shadow: 0 0 5px black;
-}
-
-.countdown-compact-counter {
-	&:not(:last-child)::after {
-		content: ':';
-	}
-}
-
-.git-hub-link {
-	display: inline-flex;
-	align-items: center;
-	justify-content: center;
-	padding: 5px 10px 5px 5px;
-	border: 2px solid white;
-	border-radius: 40px;
-	letter-spacing: .1em;
-	fill: white;
-	transition: .2s;
-
-	* + * {
-		margin-left: 5px;
-	}
-
-	&:hover {
-		fill: black;
-		color: black;
-		background: white;
-	}
-}
-
-.git-hub-logo {
-	display: block;
-	position: relative;
-	top: -.5px;
 }
