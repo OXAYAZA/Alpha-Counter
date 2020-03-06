@@ -21,36 +21,27 @@
 		return uId;
 	}
 
+	function objectTag ( data ) {
+		return Object.prototype.toString.call( data ).slice( 8, -1 );
+	}
+
 	/**
 	 * Слияние обьектов
-	 * @param {Array} sources - массив слияемых обьектов
-	 * @param {object} [options] - дополнительные опции
-	 * @param {Array} [options.except] - массив исключенных ключей
-	 * @param {boolean} [options.skipNull] - пропуск значений null
-	 * @return {object} - новый обьект
+	 * @param {Object} source
+	 * @param {Object} merged
+	 * @return {Object}
 	 */
-	function merge ( sources, options ) {
-		options = options || {};
-		var initial = {};
-
-		for ( var s = 0; s < sources.length; s++ ) {
-			var source = sources[ s ];
-			if ( !source ) continue;
-
-			for ( var key in source ) {
-				if ( options.except && !options.except.indexOf( key ) ) {
-					continue;
-				} else if ( source[ key ] instanceof Object && !(source[ key ] instanceof Node) && !(source[ key ] instanceof Function) ) {
-					initial[ key ] = merge( [ initial[ key ], source[ key ] ], options );
-				} else if ( options.skipNull && source[ key ] === null ) {
-					continue;
-				} else {
-					initial[ key ] = source[ key ];
-				}
+	function merge( source, merged ) {
+		for ( let key in merged ) {
+			if ( objectTag( merged[ key ] ) === 'Object' ) {
+				if ( typeof( source[ key ] ) !== 'object' ) source[ key ] = {};
+				source[ key ] = merge( source[ key ], merged[ key ] );
+			} else {
+				source[ key ] = merged[ key ];
 			}
 		}
 
-		return initial;
+		return source;
 	}
 
 	/**
@@ -62,7 +53,26 @@
 		if ( !data || !data.node ) throw Error( 'Missing required αProgressCircle parameters (node).' );
 
 		// Слияние стандартных и полученных параметров
-		this.params = merge( [ this.defaults, data ] );
+		this.params= {};
+		merge( this.params, ProgressCircle.defaults );
+		merge( this.params, data );
+
+		// Служебные параметры
+		this.internal = {
+			viewBox: [ 0, 0, 100, 100 ],
+			ellipse: {
+				rx: 72,
+				ry: 72,
+				cx: 50,
+				cy: 50
+			},
+			x:        0,
+			y:        0,
+			clipped:  null,
+			clipPath: null,
+			path:     null,
+			pathD:    ''
+		};
 
 		// Создание уникального идентификатора
 		if ( !this.params.clipId ) this.params.clipId = uId( 8 );
@@ -94,31 +104,14 @@
 		this.render( this.params.angle );
 	}
 
-	// Служебные параметры
-	ProgressCircle.prototype.internal = {
-		viewBox: [ 0, 0, 100, 100 ],
-		ellipse: {
-			rx: 72,
-			ry: 72,
-			cx: 50,
-			cy: 50
-		},
-		x:        0,
-		y:        0,
-		clipped:  null,
-		clipPath: null,
-		path:     null,
-		pathD:    ''
-	};
-
 	// Параметры по умолчанию
-	ProgressCircle.prototype.defaults = {
+	ProgressCircle.defaults = {
 		node:    null,
 		clipped: '.clipped',
 		clipId:  null,
 		angle:   0
 	};
-	
+
 	ProgressCircle.prototype.calc = function() {
 		this.internal.x = Math.sin( this.params.angle * Math.PI/180 ) * this.internal.ellipse.rx + this.internal.ellipse.cx;
 		this.internal.y = -Math.cos( this.params.angle * Math.PI/180 ) * this.internal.ellipse.ry + this.internal.ellipse.cy;

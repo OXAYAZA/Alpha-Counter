@@ -11,36 +11,29 @@
  * @see      {@link https://oxayaza.page.link/linkedin}
  */
 ( function () {
+	function objectTag ( data ) {
+		return Object.prototype.toString.call( data ).slice( 8, -1 );
+	}
+
 	/**
-	 * Слияние обьектов
-	 * @param {Array} sources - массив слияемых обьектов
-	 * @param {object} [options] - дополнительные опции
-	 * @param {Array} [options.except] - массив исключенных ключей
-	 * @param {boolean} [options.skipNull] - пропуск значений null
-	 * @return {object} - новый обьект
+	 * Слияние обьектов (Если слияемое значение равно null то оно игнорируется)
+	 * @param {Object} source
+	 * @param {Object} merged
+	 * @return {Object}
 	 */
-	function merge ( sources, options ) {
-		options = options || {};
-		var initial = {};
+	function merge( source, merged ) {
+		for ( let key in merged ) {
+			let tag = objectTag( merged[ key ] );
 
-		for ( var s = 0; s < sources.length; s++ ) {
-			var source = sources[ s ];
-			if ( !source ) continue;
-
-			for ( var key in source ) {
-				if ( options.except && !options.except.indexOf( key ) ) {
-					continue;
-				} else if ( source[ key ] instanceof Object && !(source[ key ] instanceof Node) && !(source[ key ] instanceof Function) ) {
-					initial[ key ] = merge( [ initial[ key ], source[ key ] ], options );
-				} else if ( options.skipNull && source[ key ] === null ) {
-					continue;
-				} else {
-					initial[ key ] = source[ key ];
-				}
+			if ( tag === 'Object' ) {
+				if ( typeof( source[ key ] ) !== 'object' ) source[ key ] = {};
+				source[ key ] = merge( source[ key ], merged[ key ] );
+			} else if ( tag !== 'Null' ) {
+				source[ key ] = merged[ key ];
 			}
 		}
 
-		return initial;
+		return source;
 	}
 
 	/**
@@ -53,8 +46,50 @@
 			throw Error( 'Missing of bad required αCountdown parameters (node, from, to).' );
 		}
 
+		// Служебные параметры
+		this.internal = {
+			from:      null,
+			to:        null,
+			now:       null,
+			counters: {
+				days:    null,
+				hours:   null,
+				minutes: null,
+				seconds: null
+			},
+			circles: {
+				days:    null,
+				hours:   null,
+				minutes: null,
+				seconds: null
+			},
+			period: {
+				full:    null,
+				now:     null
+			},
+			time: {
+				days:    null,
+				hours:   null,
+				minutes: null,
+				seconds: null
+			},
+			angle: {
+				days:    null,
+				hours:   null,
+				minutes: null,
+				seconds: null
+			},
+			tmp: {
+				days:    null,
+				hours:   null,
+				minutes: null
+			}
+		};
+
 		// Слияние стандартных и полученных параметров
-		this.params = merge( [ this.defaults, data ], { skipNull: true } );
+		this.params = {};
+		merge( this.params, Countdown.defaults );
+		merge( this.params, data );
 
 		// Добавление ссылки на прототип в элемент
 		this.params.node.countdown = this;
@@ -78,7 +113,7 @@
 	}
 
 	// Параметры по умолчанию
-	Countdown.prototype.defaults = {
+	Countdown.defaults = {
 		from:   null,
 		to:     null,
 		tick:   1000,
@@ -93,46 +128,6 @@
 		hour:   1000 * 60 * 60,
 		day:    1000 * 60 * 60 * 24,
 		year:   1000 * 60 * 60 * 24 * 365
-	};
-
-	// Служебные параметры
-	Countdown.prototype.internal = {
-		from:      null,
-		to:        null,
-		now:       null,
-		counters: {
-			days:    null,
-			hours:   null,
-			minutes: null,
-			seconds: null
-		},
-		circles: {
-			days:    null,
-			hours:   null,
-			minutes: null,
-			seconds: null
-		},
-		period: {
-			full:    null,
-			now:     null
-		},
-		time: {
-			days:    null,
-			hours:   null,
-			minutes: null,
-			seconds: null
-		},
-		angle: {
-			days:    null,
-			hours:   null,
-			minutes: null,
-			seconds: null
-		},
-		tmp: {
-			days:    null,
-			hours:   null,
-			minutes: null
-		}
 	};
 
 	// Пересчет времени

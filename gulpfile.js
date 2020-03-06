@@ -1,52 +1,127 @@
 const
-	gulp         = require( 'gulp' ),
-	browserSync  = require( 'browser-sync' ),
-	gutil        = require( 'gulp-util' ),
-	util         = require( 'tempaw-functions' ).util,
-	task         = require( 'tempaw-functions' ).task,
-	ROOT         = process.cwd().replace( /\\/g, '/' ),
-	configFile   = `${ROOT}/config.js`;
+	gulp        = require( 'gulp' ),
+	babel       = require( 'gulp-babel' ),
+	browserSync = require( 'browser-sync' ),
+	emittyPug   = require( 'emitty' ).setup( 'dev', 'pug' ),
+	emittyScss  = require( 'emitty' ).setup( 'dev', 'scss' ),
+	plumber     = require( 'gulp-plumber' ),
+	sass        = require( 'gulp-sass' ),
+	pug         = require( 'gulp-pug' ),
+	rename      = require( 'gulp-rename' ),
+	gulpIf      = require( 'gulp-if' );
 
-util.configLoad( configFile );
+function errorHandler ( error ) {
+	let
+		errTitle = `${error.plugin.toUpperCase()} Error`,
+		errMessage = '';
 
-// Default task
-gulp.task( 'default', function() {
-	global.watch = true;
-
-	gulp.watch( configFile, function config( end ) {
-		util.configLoad( configFile );
-		end();
-	});
-
-	if( global.config.livedemo.enable ) browserSync.init( global.config.livedemo );
-	else gutil.log( gutil.colors.yellow( 'Livedemo disabled!' ) );
-
-	if( global.config.watcher.enable ) {
-		var watcher = gulp.watch( global.config.watcher.watch );
-
-		watcher.on ( 'change', function( path, stats ) {
-			browserSync.reload( path );
-		});
+	switch ( error.plugin ) {
+		case 'gulp-sass':
+			errMessage = `${errTitle}\n${error.messageOriginal}\nAt: ${error.line}:${error.column}\nFile: ${error.relativePath}`;
+			break;
+		case 'gulp-pug':
+			errMessage =
+				( error.message ? error.message : error.name ) +
+				( ( error.line && error.column ) ? ('\rAt: '+ error.line +':'+ error.column) : '' ) +
+				( error.filename ? ('\rFile: '+ error.filename) : ('\rFile: '+ error.path) );
+			break;
+		default:
+			errMessage = JSON.stringify( error, null, 2 );
+			break;
 	}
 
-	if( global.config.sass.enable )  gulp.watch( [ configFile, global.config.sass.watch ],  task.sass );
-	if( global.config.less.enable )  gulp.watch( [ configFile, global.config.less.watch ],  task.less );
-	if( global.config.jade.enable )  gulp.watch( [ configFile, global.config.jade.watch ],  task.jade );
-	if( global.config.babel.enable ) gulp.watch( [ configFile, global.config.babel.watch ], task.babel );
-	if( global.config.pug.enable )   gulp.watch( [ configFile, global.config.pug.watch ],   task.pug ).on('all', ( event, filepath ) => {
-		global.emittyChangedFile = filepath;
+	console.log( `${errTitle}\n${errMessage}` );
+}
+
+function compileSass() {
+	return new Promise( ( resolve, reject ) => {
+		emittyScss.scan( global.emittyScssFile ).then( () => {
+			return gulp.src( 'dev/**/!(_)*.scss' )
+			.pipe( plumber({ errorHandler: errorHandler }) )
+			.pipe( gulpIf( global.watch, emittyScss.filter( global.emittyScssFile ) ) )
+			.pipe( sass({ outputStyle: 'expanded', indentType: 'tab', indentWidth: 1, linefeed: 'cr' }) )
+			.on( 'error', resolve )
+			.pipe( gulp.dest( 'dev' ) )
+			.on( 'end', function () {
+				browserSync.reload( '*.css' );
+				resolve();
+			});
+		});
 	});
-});
+}
 
-// Show Extra Tasks
-if( global.config.cache.showTask )        gulp.task( task.cache );
-if( global.config.sass.showTask )         gulp.task( task.sass );
-if( global.config.less.showTask )         gulp.task( task.less );
-if( global.config.pug.showTask )          gulp.task( task.pug );
-if( global.config.jade.showTask )         gulp.task( task.jade );
-if( global.config.htmlValidate.showTask ) gulp.task( task.htmlValidate );
-if( global.config.jadeToPug.showTask )    gulp.task( task.jadeToPug );
-if( global.config.lessToScss.showTask )   gulp.task( task.lessToScss );
+function compilePug () {
+	return new Promise( ( resolve, reject ) => {
+		emittyPug.scan( global.emittyPugFile ).then( () => {
+			gulp.src( 'dev/**/!(_)*.pug' )
+			.pipe( plumber({ errorHandler: errorHandler }) )
+			.pipe( gulpIf( global.watch, emittyPug.filter( global.emittyPugFile ) ) )
+			.pipe( pug({ pretty: true, verbose: true, self: true, }) )
+			.pipe( gulp.dest( 'dev' ) )
+			.on( 'end', function () {
+				browserSync.reload();
+				resolve();
+			})
+		});
+	});
+}
 
-// Generating tasks from build rules
-util.genBuildTasks();
+function transpileJs () {
+	return gulp.src( [ 'dev/Counter.js', 'dev/ProgressCircle.js', 'dev/Countdown.js' ] )
+	.pipe( plumber({ errorHandler: errorHandler }) )
+	.pipe( babel({
+		minified: true,
+		comments: false,
+		presets: [[
+			'@babel/preset-env',
+			{
+				"targets": {
+					"ie": "10",
+					"edge": "17",
+					"firefox": "60",
+					"chrome": "67",
+					"safari": "11.1"
+				}
+			}
+		]]
+	}))
+	.pipe( rename({ suffix: '.min' }) )
+	.pipe( gulp.dest( 'dist' ) );
+}
+
+function defaultTask() {
+	global.watch = true;
+
+	browserSync.init({
+		server: {
+			baseDir: `./dev`,
+			directory: false
+		},
+		port: 8000,
+		open: false,
+		notify: true,
+		reloadDelay: 0,
+		ghostMode: {
+			clicks: false,
+			forms: false,
+			scroll: false
+		}
+	});
+
+	gulp.watch( 'dev/**/*.scss', compileSass ).on( 'all', function ( event, filepath ) {
+		global.emittyScssFile = filepath;
+	});
+
+	gulp.watch( 'dev/**/*.pug', compilePug ).on( 'all', function ( event, filepath ) {
+		global.emittyPugFile = filepath;
+	});
+
+	gulp.watch( 'dev/**/!(*.min).js' ).on( 'change', function () {
+		browserSync.reload();
+	});
+}
+
+exports.default = defaultTask;
+exports.sass = compileSass;
+exports.pug = compilePug;
+exports.transpileJs = transpileJs;

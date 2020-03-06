@@ -1,10 +1,10 @@
-# αCounters
+# Alpha Counter
 
 Customizable counters, progress circles, and countdown.  
 Check out this [Demo](https://codepen.io/OXAYAZA/pen/JJryqW) to see them in action!
 
 
-## αCounter Usage
+## Counter Usage
 
 HTML markup for counter:
 ```html
@@ -13,12 +13,12 @@ HTML markup for counter:
 
 Simple initialization:
 ```js
-aCounter({ node: document.querySelector( '.counter' ) });
+new Counter({ node: document.querySelector( '.counter' ) });
 ```
 
 or with all options:
 ```js
-var counter = aCounter({
+var counter = new Counter({
     node:       document.querySelector( '.counter' ),
     from:       10,
     to:         50,
@@ -31,58 +31,58 @@ var counter = aCounter({
 });
 ```
 
-### αCounter API
+### Counter API
 
-#### aCounter( options )
+#### `new Counter( options )`
 Initializes the counter and returns its instance.
 
-#### options
+#### `options`
 _Type: [Object](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object)_  
 _Required_
 
-##### node
+##### `node`
 _Type: [Element object](https://developer.mozilla.org/en-US/docs/Web/API/Element)_  
 _Required_  
 The element that is changed by the counter.
 
-##### from
+##### `from`
 _Type: [Number](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Number)_  
 _Default: 0_  
 The number from which the count begins.
 
-##### to
+##### `to`
 _Type: [Number](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Number)_  
 The number, with which the count ends. If the parameter is not specified, the counter will try to get it from the element. Otherwise, an error is thrown.
 
-##### duration
+##### `duration`
 _Type: [Number](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Number)_  
 _Default: 3000_  
 Сounting duration in milliseconds.
 
-##### refresh
+##### `refresh`
 _Type: [Number](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Number)_  
 _Default: 30_  
 Counter element render interval in milliseconds.
 
-##### formatter( value )
+##### `formatter( value )`
 _Type: [Function](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Function)_  
 A callback function that serves as a counter value formatter. Must return a modified counter value (for example, added prefix). The counter instance serves as the context.
 
-##### onStart( value )
+##### `onStart( value )`
 _Type: [Function](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Function)_  
 Callback function that is executed before the count starts. The counter instance serves as the context. The counter value serves as a parameter.
 
-##### onUpdate( value )
+##### `onUpdate( value )`
 _Type: [Function](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Function)_  
 Callback function that is executed on each counter refresh. The counter instance serves as the context. The counter value serves as a parameter.
 
-##### onComplete( value )
+##### `onComplete( value )`
 _Type: [Function](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Function)_  
 Callback function that is executed when counting is complete. The counter instance serves as the context. The counter value serves as a parameter.
 
 
-## αProgressCircle Usage
-__αProgressCircle__ requires at least one SVG element with a clipped class.
+## ProgressCircle Usage
+__ProgressCircle__ requires at least one SVG element with a clipped class.
 
 HTML markup for progress circle:
 ```html
@@ -93,12 +93,12 @@ HTML markup for progress circle:
 
 Simple initialization:
 ```js
-aProgressCircle({ node: document.querySelector( '.progress-circle' ) });
+new ProgressCircle({ node: document.querySelector( '.progress-circle' ) });
 ```
 
 or with all options:
 ```js
-var progressCircle = aProgressCircle({
+var progressCircle = new ProgressCircle({
     node:    document.querySelector( '.progress-circle' ),
     clipped: '.clipped',
     clipId:  'MyAwesomeId',
@@ -106,39 +106,39 @@ var progressCircle = aProgressCircle({
 });
 ```
 
-## αProgressCircle API
+## ProgressCircle API
 
-#### aProgressCircle( options )
+#### `new ProgressCircle( options )`
 Initializes the SVG progress circle and returns its instance.
 
-#### options
+#### `options`
 _Type: [Object](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object)_  
 _Required_
 
-##### node
+##### `node`
 _Type: [Element object](https://developer.mozilla.org/en-US/docs/Web/API/Element)_  
 _Required_  
 The SVG element that is processed by the aProgressCircle instance.
 
-##### clipped
+##### `clipped`
 _Type: [String](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String)_  
 _Default: '.clipped'_  
 The selector of the SVG element to be clipped depending on the progress angle.
 
-##### clipId
+##### `clipId`
 _Type: [String](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String)_  
 _Default: random eight-character string_  
 ID of the generated `<clipPath>` element.
 
-##### angle
+##### `angle`
 _Type: [Number](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Number)_  
 _Default: 0_  
 Angle of circle progress (from 0 to 360 degrees inclusive).
 
 
-## αCountdown Usage
+## Countdown Usage
 Requires exactly 4 elements with attributes `data-counter-days`, `data-counter-hours`, `data-counter-minutes`, `data-counter-seconds` and exactly 4 svg-elements with attributes `data-progress-days`, `data-progress-hours`, `data-progress-minutes`, `data-progress-seconds`.  
-The latter must satisfy the conditions of the __αProgressCircle__.
+The latter must satisfy the conditions of the __ProgressCircle__.
 Just use and modify basic markup =)
 
 HTML markup for countdown:
@@ -182,7 +182,7 @@ Some basic styles:
 
 Simple initialization:
 ```js
-aCountdown({
+new Countdown({
     node: document.querySelector( '.countdown' ),
     to:   '2019-09-20'
 });
@@ -190,7 +190,7 @@ aCountdown({
 
 or with all options:
 ```js
-var countdown = aCountdown({
+var countdown = new Countdown({
     node:  document.querySelector( '.countdown' ),
     from:  '2017-08-19',
     to:    '2019-09-20',
@@ -199,35 +199,35 @@ var countdown = aCountdown({
 });
 ```
 
-## αCountdown API
+## Countdown API
 
-#### aCountdown( options )
+#### `new Countdown( options )`
 Initializes the countdown and returns its instance.
 
-#### options
+#### `options`
 _Type: [Object](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object)_  
 _Required_
 
-##### node
+##### `node`
 _Type: [Element object](https://developer.mozilla.org/en-US/docs/Web/API/Element)_  
 _Required_  
 The main element that is processed by the aCountdown instance.
 
-##### from
+##### `from`
 _Type: [String](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String)_  
 Countdown start date. Must be in valid [format](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Date/parse).
 
-##### to
+##### `to`
 _Type: [String](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String)_  
 _Required_  
 Countdown end date. Must be in valid [format](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Date/parse).
 
-##### tick
+##### `tick`
 _Type: [Number](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Number)_  
 _Default: 1000_  
 Countdown render interval in milliseconds.
 
-##### onTick
+##### `onTick`
 _Type: [Function](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Function)_  
 Callback function that is executed on each countdown render. The countdown instance serves as the context.
 

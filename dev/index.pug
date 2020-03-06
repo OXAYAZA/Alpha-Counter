@@ -3,19 +3,19 @@ include _mixins
 doctype html
 html( lang='en' )
 	head
-		title Alpha Count
+		title Alpha Counter
 
 		meta( name='viewport', content='width=device-width, height=device-height, initial-scale=1.0' )
 		meta( http-equiv='X-UA-Compatible' content='IE=Edge' )
 		meta( charset='utf-8' )
 
-		link( rel='stylesheet', href='css/style.css' )
+		link( rel='stylesheet', href='style.css' )
 
-		script( src='js/polyfill-CustomEvent.js' )
-		script( src='js/Counter.js' )
-		script( src='js/ProgressCircle.js' )
-		script( src='js/Countdown.js' )
-		script( src='js/script.js' )
+		script( src='polyfill-CustomEvent.js' )
+		script( src='Counter.js' )
+		script( src='ProgressCircle.js' )
+		script( src='Countdown.js' )
+		script( src='script.js' )
 
 	body
 		.page
@@ -26,4 +26,4 @@ html( lang='en' )
 
 					.block
 						+counter( 100 )
-						+progress-circle( 180 )
+						+progress-circle( 200 )
