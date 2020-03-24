@@ -191,10 +191,11 @@ new Countdown({
 or with all options:
 ```js
 var countdown = new Countdown({
-    node:  document.querySelector( '.countdown' ),
-    from:  '2017-08-19',
-    to:    '2019-09-20',
-    tick:  100,
+    node:   document.querySelector( '.countdown' ),
+    from:   '2017-08-19',
+    to:     '2019-09-20',
+    count:  'auto',
+    tick:   100,
     onTick: function() { console.log( this ); }
 });
 ```
@@ -221,6 +222,12 @@ Countdown start date. Must be in valid [format](https://developer.mozilla.org/en
 _Type: [String](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String)_  
 _Required_  
 Countdown end date. Must be in valid [format](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Date/parse).
+
+
+##### `count`
+_Type: [String](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String)_  
+_Default: 'auto'_  
+Count mode: 'until', 'since' or 'auto'.
 
 ##### `tick`
 _Type: [Number](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Number)_  
